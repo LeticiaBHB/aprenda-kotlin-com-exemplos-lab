@@ -1,21 +1,60 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
-
 enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
 
-class Usuario
+data class Usuario(val nome: String, val email: String)
 
 data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
+data class Formacao(val nome: String, var conteudos: MutableList<ConteudoEducacional>) {
 
     val inscritos = mutableListOf<Usuario>()
-    
+
     fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+        if (!inscritos.contains(usuario)) {
+            inscritos.add(usuario)
+            println("Usuário ${usuario.nome} matriculado na formação $nome.")
+        } else {
+            println("Usuário ${usuario.nome} já está matriculado nesta formação.")
+        }
+    }
+
+    fun listarConteudos() {
+        println("Conteúdos da formação $nome:")
+        for (conteudo in conteudos) {
+            println("${conteudo.nome} - Duração: ${conteudo.duracao} minutos")
+        }
+    }
+
+    fun listarInscritos() {
+        println("Inscritos na formação $nome:")
+        for (usuario in inscritos) {
+            println("${usuario.nome} - ${usuario.email}")
+        }
     }
 }
 
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+    // Exemplo de uso das classes e funções
+
+    // Criando alguns conteúdos educacionais
+    val conteudo1 = ConteudoEducacional("Introdução ao Kotlin", 90)
+    val conteudo2 = ConteudoEducacional("Classes e Objetos em Kotlin", 120)
+    val conteudo3 = ConteudoEducacional("Collections em Kotlin", 150)
+
+    // Criando uma formação
+    val formacaoKotlin = Formacao("Formação Kotlin", mutableListOf(conteudo1, conteudo2, conteudo3))
+
+    // Criando alguns usuários
+    val usuario1 = Usuario("Alice", "alice@example.com")
+    val usuario2 = Usuario("Bob", "bob@example.com")
+    val usuario3 = Usuario("Carol", "carol@example.com")
+
+    // Matriculando usuários na formação
+    formacaoKotlin.matricular(usuario1)
+    formacaoKotlin.matricular(usuario2)
+    formacaoKotlin.matricular(usuario3)
+    formacaoKotlin.matricular(usuario1) // Tentando matricular novamente o mesmo usuário
+
+    // Listando conteúdos e inscritos na formação
+    formacaoKotlin.listarConteudos()
+    formacaoKotlin.listarInscritos()
 }
